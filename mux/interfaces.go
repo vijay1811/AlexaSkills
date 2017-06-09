@@ -3,7 +3,7 @@ package mux
 import (
 	"net/http"
 
-	"github.com/personalbuildhelper/requesthandlers/alexa"
+	"AlexaSkills/requesthandlers/alexa"
 )
 
 type RequestHandler interface {

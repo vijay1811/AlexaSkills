@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"strings"
 
-	muxAlexa "github.com/personalbuildhelper/mux/alexa"
-	"github.com/personalbuildhelper/mux/googlehome"
-	"github.com/personalbuildhelper/mux/system"
-	rhAlexa "github.com/personalbuildhelper/requesthandlers/alexa"
+	muxAlexa "AlexaSkills/mux/alexa"
+	alexaProtocol "AlexaSkills/protocol/alexa"
+	rhAlexa "AlexaSkills/requesthandlers/alexa"
 )
 
 type Handler struct {
 	handlers map[string]RequestHandler
 	rh       rhAlexa.RequestHandler
+	slots    []*alexaProtocol.Slot
 }
 
 func NewHandler() *Handler {
@@ -22,9 +22,10 @@ func NewHandler() *Handler {
 		handlers: make(map[string]RequestHandler),
 		rh:       rhAlexa.NewAlexaRequestHandler(),
 	}
+
+	// Multiple handlers
 	h.handlers["/alexa"] = &muxAlexa.Handler{}
-	h.handlers["/gh"] = &googlehome.Handler{}
-	h.handlers["/system"] = &system.Handler{}
+
 	return h
 }
 

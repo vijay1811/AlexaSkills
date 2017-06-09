@@ -3,8 +3,8 @@ package alexa
 import (
 	"errors"
 
-	"github.com/personalbuildhelper/protocol/alexa"
-	"github.com/personalbuildhelper/requesthandlers/alexa/application/buildhelper"
+	"AlexaSkills/protocol/alexa"
+	"AlexaSkills/requesthandlers/alexa/application/buildhelper"
 )
 
 const (

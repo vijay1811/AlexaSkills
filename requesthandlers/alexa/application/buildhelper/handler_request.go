@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/personalbuildhelper/protocol/alexa"
+	"AlexaSkills/protocol/alexa"
 )
 
 type Default struct {
