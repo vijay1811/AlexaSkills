@@ -17,7 +17,6 @@ func init() {
 
 func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHandler) {
 
-	fmt.Printf("HTTP Request Received: %+v", r)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("ERROR: %v\n", err)

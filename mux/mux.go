@@ -1,6 +1,7 @@
 package mux
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -30,6 +31,8 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Printf("HTTP Request Received: %+v", r)
 
 	log.Printf("Url: %s\n", r.URL.String())
 	for key, handler := range h.handlers {
