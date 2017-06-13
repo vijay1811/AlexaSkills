@@ -6,12 +6,11 @@ import (
 	"log"
 	"net/http"
 
-	alexaProtocol "github.com/personalbuildhelper/protocol/alexa"
-	"github.com/personalbuildhelper/requesthandlers/alexa"
+	alexaProtocol "AlexaSkills/protocol/alexa"
+	"AlexaSkills/requesthandlers/alexa"
 )
 
 func init() {
-	mux = make(map[string]func(http.ResponseWriter, *http.Request, alexa.RequestHandler))
 	mux["/alexa/buildhelper"] = alexaBuildHelper
 }
 

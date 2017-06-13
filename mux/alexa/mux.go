@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/personalbuildhelper/requesthandlers/alexa"
+	"AlexaSkills/requesthandlers/alexa"
 )
 
 var mux = make(map[string]func(http.ResponseWriter, *http.Request, alexa.RequestHandler))

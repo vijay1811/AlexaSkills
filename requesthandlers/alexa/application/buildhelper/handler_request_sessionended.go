@@ -3,7 +3,7 @@ package buildhelper
 import (
 	"errors"
 
-	"github.com/personalbuildhelper/protocol/alexa"
+	"AlexaSkills/protocol/alexa"
 )
 
 type handlerSessionEndedRequest struct {

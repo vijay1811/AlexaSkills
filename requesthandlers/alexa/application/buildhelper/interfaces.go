@@ -1,6 +1,6 @@
 package buildhelper
 
-import "github.com/personalbuildhelper/protocol/alexa"
+import "AlexaSkills/protocol/alexa"
 
 type requestHandler interface {
 	handleRequest(r *alexa.AlexaRequest) (*alexa.AlexaResponse, error)

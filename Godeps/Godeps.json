@@ -1,6 +1,6 @@
 {
-	"ImportPath": "github.com/personalbuildhelper",
+	"ImportPath": "AlexaSkills",
 	"GoVersion": "go1.6",
-	"GodepVersion": "v75",
+	"GodepVersion": "v79",
 	"Deps": []
 }
