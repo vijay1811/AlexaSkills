@@ -7,7 +7,7 @@ type Intent struct {
 
 type Slot struct {
 	Name  string `json,"name"`
-	Value string `json,"value"`
+	Value string `json,"value,omitempty"`
 	// ConfirmationStatus ConfirmationStatus `json,"confirmationstatus"`
 }
 
