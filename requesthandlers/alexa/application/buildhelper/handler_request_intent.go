@@ -51,8 +51,8 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	slots := intent.Slots
 
 	for key := range attributes {
-		if slots[key].Value != "" {
-			slots[key] = attributes[key]
+		if slots[key].Value != "" && attributes[key].Value != "" {
+			slots[key].Value = attributes[key].Value
 		}
 	}
 
