@@ -2,6 +2,7 @@ package buildhelper
 
 import (
 	"fmt"
+	"log"
 
 	"AlexaSkills/protocol/alexa"
 )
@@ -17,6 +18,8 @@ func (handlerIntentRequest) handleRequest(r *alexa.AlexaRequest) (*alexa.AlexaRe
 	if r.Session.Attributes != nil {
 		attributes = r.Session.Attributes
 	}
+
+	log.Printf("ATTRIBUTES RECEIVED IN HANDLER INTENT:\n%+v", attributes)
 
 	outputSpeech, slots, isComplete := getOutputSpeech(r.Request.Intent, attributes)
 
@@ -61,7 +64,7 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	slots := intent.Slots
 
 	for slotName := range attributes {
-		if slots[slotName].Value != "" && attributes[slotName].Value != "" {
+		if slots[slotName].Value != "" {
 			slots[slotName].Value = attributes[slotName].Value
 		}
 	}
