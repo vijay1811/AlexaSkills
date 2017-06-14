@@ -32,7 +32,7 @@ func NewHandler() *Handler {
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Printf("HTTP Request Received: \n%+v\nMethod: %+v\nURL: %+v\nBODY: %+v", r, r.Method, r.URL, r.Body)
+	fmt.Printf("\nHTTP Request Received: \n%+v\nMETHOD: %+v\nURL: %+v", r, r.Method, r.URL)
 
 	log.Printf("Url: %s\n", r.URL.String())
 	for key, handler := range h.handlers {

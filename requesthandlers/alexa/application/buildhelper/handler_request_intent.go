@@ -51,35 +51,57 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	slots := intent.Slots
 
 	for key := range attributes {
-		if _, exists := slots[key]; !exists {
+		if slots[key].Value != "" {
 			slots[key] = attributes[key]
 		}
 	}
 
-	buildType, buildTypeGiven := slots["buildtypeslot"]
-	sourceType, sourceTypeGiven := slots["buildsourcetypeslot"]
+	// for key := range attributes {
+	// 	if _, exists := slots[key]; !exists {
+	// 		slots[key] = attributes[key]
+	// 	}
+	// }
+
+	buildTypeSlot := slots["buildtypeslot"]
+	buildSourceTypeSlot := slots["buildsourcetypeslot"]
+
+	var buildType, sourceType string
+	var buildTypeGiven, sourceTypeGiven bool
+
+	if buildTypeSlot.Value != "" {
+		buildType = buildTypeSlot.Value
+		buildTypeGiven = true
+	}
+
+	if buildSourceTypeSlot.Value != "" {
+		sourceType = buildSourceTypeSlot.Value
+		sourceTypeGiven = true
+	}
+
+	// buildType, buildTypeGiven := slots["buildtypeslot"]
+	// sourceType, sourceTypeGiven := slots["buildsourcetypeslot"]
 
 	switch {
 	case buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("%s is build for %s", sourceType.Value, buildType.Value),
+			Text: fmt.Sprintf("%s is build for %s", sourceType, buildType),
 		}
 		isComplete = true
 	case !buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the build type",
+			Text: fmt.Sprintf("Please tell the build type for build source %s", sourceType),
 		}
 	case buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the source type",
+			Text: fmt.Sprintf("Please tell the build source type for the build type %s", buildType),
 		}
 	case !buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell source and type for build",
+			Text: "Please tell the build source type and build type",
 		}
 	default:
 		outSpeech = &alexa.OutputSpeech{
