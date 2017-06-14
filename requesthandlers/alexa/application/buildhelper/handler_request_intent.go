@@ -64,8 +64,13 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	slots := intent.Slots
 
 	for slotName := range attributes {
+		// Looks for the value in the slots for the key 'slotName' (for updated values)
 		if slots[slotName].Value != "" {
-			slots[slotName].Value = attributes[slotName].Value
+			// Searches for value in the attributes for the key 'slotName' as backup
+			if attributes[slotName].Value != "" {
+				// if found, copy the value from attributes to slots
+				slots[slotName].Value = attributes[slotName].Value
+			}
 		}
 	}
 
