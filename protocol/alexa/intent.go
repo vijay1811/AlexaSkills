@@ -6,18 +6,18 @@ type Intent struct {
 }
 
 type Slot struct {
-	Name               string             `json,"name"`
-	Value              string             `json,"value"`
-	ConfirmationStatus ConfirmationStatus `json,"confirmationstatus"`
+	Name  string `json,"name"`
+	Value string `json,"value,omitempty"`
+	// ConfirmationStatus ConfirmationStatus `json,"confirmationstatus"`
 }
 
-type ConfirmationStatus string
+// type ConfirmationStatus string
 
-const (
-	ConfirmationStatus_NONE      ConfirmationStatus = "NONE"
-	ConfirmationStatus_CONFIRMED ConfirmationStatus = "CONFIRMED"
-	ConfirmationStatus_DENIED    ConfirmationStatus = "DENIED"
-)
+// const (
+// 	ConfirmationStatus_NONE      ConfirmationStatus = "NONE"
+// 	ConfirmationStatus_CONFIRMED ConfirmationStatus = "CONFIRMED"
+// 	ConfirmationStatus_DENIED    ConfirmationStatus = "DENIED"
+// )
 
 type IntentName string
 

@@ -2,6 +2,7 @@ package buildhelper
 
 import (
 	"fmt"
+	"log"
 
 	"AlexaSkills/protocol/alexa"
 )
@@ -17,6 +18,8 @@ func (handlerIntentRequest) handleRequest(r *alexa.AlexaRequest) (*alexa.AlexaRe
 	if r.Session.Attributes != nil {
 		attributes = r.Session.Attributes
 	}
+
+	log.Printf("ATTRIBUTES RECEIVED IN HANDLER INTENT:\n%+v", attributes)
 
 	outputSpeech, slots, isComplete := getOutputSpeech(r.Request.Intent, attributes)
 
@@ -50,36 +53,56 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	// All the newly requested slots in the intent must be saved in a new map.
 	slots := intent.Slots
 
-	for key := range attributes {
-		if _, exists := slots[key]; !exists {
-			slots[key] = attributes[key]
+	for slotName := range attributes {
+		intentSlot := slots[slotName]
+		log.Printf("Intent Slot: %+v", intentSlot)
+
+		attributeSlot := attributes[slotName]
+		log.Printf("Attribute Slot: %+v", attributeSlot)
+
+		if intentSlot.Value == "" && attributeSlot.Value != "" {
+			delete(slots, slotName)
+			slots[slotName] = attributeSlot
 		}
 	}
 
-	buildType, buildTypeGiven := slots["buildtypeslot"]
-	sourceType, sourceTypeGiven := slots["buildsourcetypeslot"]
+	buildTypeSlot := slots["buildtypeslot"]
+	buildSourceTypeSlot := slots["buildsourcetypeslot"]
+
+	var buildType, sourceType string
+	var buildTypeGiven, sourceTypeGiven bool
+
+	if buildTypeSlot.Value != "" {
+		buildType = buildTypeSlot.Value
+		buildTypeGiven = true
+	}
+
+	if buildSourceTypeSlot.Value != "" {
+		sourceType = buildSourceTypeSlot.Value
+		sourceTypeGiven = true
+	}
 
 	switch {
 	case buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("%s is build for %s", sourceType.Value, buildType.Value),
+			Text: fmt.Sprintf("'%s' is build for '%s'", sourceType, buildType),
 		}
 		isComplete = true
 	case !buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the build type",
+			Text: fmt.Sprintf("Please tell the build type for build source '%s'", sourceType),
 		}
 	case buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the source type",
+			Text: fmt.Sprintf("Please tell the build source type for the build type '%s'", buildType),
 		}
 	case !buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell source and type for build",
+			Text: "Please tell the build source type and build type",
 		}
 	default:
 		outSpeech = &alexa.OutputSpeech{
@@ -90,6 +113,3 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 
 	return outSpeech, slots, isComplete
 }
-
-/*amzn1.ask.skill.462a6bc5-8525-48cd-9b6a-bc862fc1b667
-amzn1.ask.skill.462a6bc5-8525-48cd-9b6a-bc862fc1b667*/
