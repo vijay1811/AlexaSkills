@@ -49,6 +49,6 @@ func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHa
 		return
 	}
 
-	log.Printf("RESPONSE: %v\n", resp)
+	log.Printf("RESPONSE: %v\n", string(resp))
 	w.Write(resp)
 }
