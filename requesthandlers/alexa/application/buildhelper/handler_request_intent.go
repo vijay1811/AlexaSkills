@@ -85,18 +85,18 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	case buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("%s is build for %s", sourceType, buildType),
+			Text: fmt.Sprintf("'%s' is build for '%s'", sourceType, buildType),
 		}
 		isComplete = true
 	case !buildTypeGiven && sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build type for build source %s", sourceType),
+			Text: fmt.Sprintf("Please tell the build type for build source '%s'", sourceType),
 		}
 	case buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build source type for the build type %s", buildType),
+			Text: fmt.Sprintf("Please tell the build source type for the build type '%s'", buildType),
 		}
 	case !buildTypeGiven && !sourceTypeGiven:
 		outSpeech = &alexa.OutputSpeech{

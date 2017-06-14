@@ -2,7 +2,6 @@ package alexa
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -33,7 +32,7 @@ func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHa
 		return
 	}
 
-	fmt.Printf("Alexa Request Received: %+v", alexaReq)
+	log.Printf("ALEXA REQUEST RECEIVED: %+v", alexaReq)
 
 	alexaResp, err := rh.HandleRequest(alexaReq)
 	if err != nil {
@@ -42,7 +41,7 @@ func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHa
 		return
 	}
 
-	fmt.Printf("Sending Alexa Response: %+v", alexaResp)
+	log.Printf("SENDING ALEXA RESPONSE: %+v", alexaResp)
 
 	resp, err := json.Marshal(alexaResp)
 	if err != nil {
