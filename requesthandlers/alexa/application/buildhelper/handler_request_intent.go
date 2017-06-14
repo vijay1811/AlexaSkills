@@ -47,26 +47,24 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	var outSpeech *alexa.OutputSpeech
 	var isComplete bool
 
-	// starts with all the slots from the attributes
-	slots := attributes
+	// // starts with all the slots from the attributes
+	// slots := attributes
 
-	// inputs are the new slot values from new intent
-	for slotName, slot := range intent.Slots {
-		if slot.Value != "" {
-			slots[slotName] = slot
+	// // inputs are the new slot values from new intent
+	// for slotName, slot := range intent.Slots {
+	// 	if slot.Value != "" {
+	// 		slots[slotName] = slot
+	// 	}
+	// }
+
+	// All the newly requested slots in the intent must be saved in a new map.
+	slots := intent.Slots
+
+	for slotName := range attributes {
+		if slots[slotName].Value != "" && attributes[slotName].Value != "" {
+			slots[slotName].Value = attributes[slotName].Value
 		}
 	}
-
-	/*
-		// All the newly requested slots in the intent must be saved in a new map.
-		slots := intent.Slots
-
-		for key := range attributes {
-			if slots[key].Value != "" && attributes[key].Value != "" {
-				slots[key].Value = attributes[key].Value
-			}
-		}
-	*/
 
 	// for key := range attributes {
 	// 	if _, exists := slots[key]; !exists {
