@@ -8,5 +8,5 @@ type AlexaResponse struct {
 
 type Response struct {
 	OutputSpeech     *OutputSpeech `json:"outputSpeech"`
-	ShouldEndSession bool          `json:"shouldendsession,omitempty"`
+	ShouldEndSession bool          `json:"shouldEndSession"`
 }
