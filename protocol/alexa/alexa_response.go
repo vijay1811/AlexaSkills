@@ -7,6 +7,19 @@ type AlexaResponse struct {
 }
 
 type Response struct {
-	OutputSpeech     *OutputSpeech `json:"outputSpeech"`
-	ShouldEndSession bool          `json:"shouldEndSession"`
+	OutputSpeech *OutputSpeech `json:"outputSpeech"`
+	// Card             *Card         `json:"card"`
+	ShouldEndSession bool `json:"shouldEndSession"`
 }
+
+// type Card struct {
+// 	Type *CardType `json:"type"`
+// }
+
+// type CardType string
+
+// const (
+// 	CardType_Simple      CardType = "Simple"
+// 	CardType_Standard    CardType = "Standard"
+// 	CardType_LinkAccount CardType = "LinkAccount"
+// )

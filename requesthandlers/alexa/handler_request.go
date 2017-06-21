@@ -4,11 +4,11 @@ import (
 	"errors"
 
 	"AlexaSkills/protocol/alexa"
-	"AlexaSkills/requesthandlers/alexa/application/buildhelper"
+	"AlexaSkills/requesthandlers/alexa/application/travelAssistant"
 )
 
 const (
-	aapId_buildHelper = "amzn1.ask.skill.462a6bc5-8525-48cd-9b6a-bc862fc1b667"
+	aapId_travelAssistant = "amzn1.ask.skill.4a81bcdd-bae1-4330-9f04-10ef53e58e10"
 )
 
 type Default struct {
@@ -25,7 +25,7 @@ func (d *Default) HandleRequest(r *alexa.AlexaRequest) (*alexa.AlexaResponse, er
 
 func NewAlexaRequestHandler() RequestHandler {
 	aaps := make(map[string]RequestHandler)
-	aaps[aapId_buildHelper] = buildhelper.NewRequestHandler()
+	aaps[aapId_travelAssistant] = travelAssistant.NewRequestHandler()
 	return &Default{
 		aaps: aaps,
 	}

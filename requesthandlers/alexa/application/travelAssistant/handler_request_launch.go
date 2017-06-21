@@ -1,4 +1,4 @@
-package buildhelper
+package travelAssistant
 
 import "AlexaSkills/protocol/alexa"
 
@@ -11,7 +11,7 @@ func (handlerLaunchRequest) handleRequest(r *alexa.AlexaRequest) (*alexa.AlexaRe
 		Response: &alexa.Response{
 			OutputSpeech: &alexa.OutputSpeech{
 				Type: "PlainText",
-				Text: "Hi I am build helper I will help you to build",
+				Text: "Hi, This is your Travel Assistant. I can help you book a cab.",
 			},
 		},
 	}, nil

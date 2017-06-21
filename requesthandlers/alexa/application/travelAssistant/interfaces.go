@@ -1,4 +1,4 @@
-package buildhelper
+package travelAssistant
 
 import "AlexaSkills/protocol/alexa"
 

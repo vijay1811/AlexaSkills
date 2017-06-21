@@ -1,4 +1,4 @@
-package buildhelper
+package travelAssistant
 
 import (
 	"fmt"
@@ -66,43 +66,43 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 		}
 	}
 
-	buildTypeSlot := slots["buildtypeslot"]
-	buildSourceTypeSlot := slots["buildsourcetypeslot"]
+	sourceSlot := slots["SourceSlot"]
+	destinationSlot := slots["DestinationSlot"]
 
-	var buildType, sourceType string
-	var buildTypeGiven, sourceTypeGiven bool
+	var source, destination string
+	var sourceGiven, destinationGiven bool
 
-	if buildTypeSlot.Value != "" {
-		buildType = buildTypeSlot.Value
-		buildTypeGiven = true
+	if sourceSlot.Value != "" {
+		source = sourceSlot.Value
+		sourceGiven = true
 	}
 
-	if buildSourceTypeSlot.Value != "" {
-		sourceType = buildSourceTypeSlot.Value
-		sourceTypeGiven = true
+	if destinationSlot.Value != "" {
+		destination = destinationSlot.Value
+		destinationGiven = true
 	}
 
 	switch {
-	case buildTypeGiven && sourceTypeGiven:
+	case sourceGiven && destinationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("'%s' is build for '%s'", sourceType, buildType),
+			Text: fmt.Sprintf("Your taxi is being booked for travel from '%s' to '%s'. Enjoy Your Ride!", source, destination),
 		}
 		isComplete = true
-	case !buildTypeGiven && sourceTypeGiven:
+	case !sourceGiven && destinationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build type for build source '%s'", sourceType),
+			Text: fmt.Sprintf("Please specify the starting point for the journey to '%s'", destination),
 		}
-	case buildTypeGiven && !sourceTypeGiven:
+	case sourceGiven && !destinationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build source type for the build type '%s'", buildType),
+			Text: fmt.Sprintf("Please specify the destination for your journey from '%s'", source),
 		}
-	case !buildTypeGiven && !sourceTypeGiven:
+	case !sourceGiven && !destinationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the build source type and build type",
+			Text: "Can I know the source or the destination for the ride?",
 		}
 	default:
 		outSpeech = &alexa.OutputSpeech{

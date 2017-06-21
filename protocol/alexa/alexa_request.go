@@ -17,10 +17,16 @@ type AlexaRequest struct {
 type Session struct {
 	Application *Application     `json:"application"`
 	Attributes  map[string]*Slot `json:"attributes,omitempty"`
+	User        *User            `json:"user"`
 }
 
 type Application struct {
 	ApplicationID string `json:"applicationId"`
+}
+
+type User struct {
+	UserID      string `json:"userId"`
+	AccessToken string `json:"accessToken"`
 }
 
 type Request struct {
