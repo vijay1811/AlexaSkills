@@ -4,11 +4,11 @@ import (
 	"errors"
 
 	"AlexaSkills/protocol/alexa"
-	"AlexaSkills/requesthandlers/alexa/application/buildhelper"
+	assistant "AlexaSkills/requesthandlers/alexa/application/homeassistant"
 )
 
 const (
-	aapId_buildHelper = "amzn1.ask.skill.462a6bc5-8525-48cd-9b6a-bc862fc1b667"
+	aapId_buildHelper = "amzn1.ask.skill.1df8d7cb-77c9-4cb7-839e-eb1847849e8d"
 )
 
 type Default struct {
@@ -25,7 +25,7 @@ func (d *Default) HandleRequest(r *alexa.AlexaRequest) (*alexa.AlexaResponse, er
 
 func NewAlexaRequestHandler() RequestHandler {
 	aaps := make(map[string]RequestHandler)
-	aaps[aapId_buildHelper] = buildhelper.NewRequestHandler()
+	aaps[aapId_buildHelper] = assistant.NewRequestHandler()
 	return &Default{
 		aaps: aaps,
 	}

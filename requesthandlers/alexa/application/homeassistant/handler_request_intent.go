@@ -66,43 +66,43 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 		}
 	}
 
-	buildTypeSlot := slots["buildtypeslot"]
-	buildSourceTypeSlot := slots["buildsourcetypeslot"]
+	actionSlot := slots["actionSlot"]
+	deviceSlot := slots["deviceSlot"]
 
-	var buildType, sourceType string
-	var buildTypeGiven, sourceTypeGiven bool
+	var action, device string
+	var actionGiven, deviceGiven bool
 
-	if buildTypeSlot.Value != "" {
-		buildType = buildTypeSlot.Value
-		buildTypeGiven = true
+	if actionSlot.Value != "" {
+		action = actionSlot.Value
+		actionGiven = true
 	}
 
-	if buildSourceTypeSlot.Value != "" {
-		sourceType = buildSourceTypeSlot.Value
-		sourceTypeGiven = true
+	if deviceSlot.Value != "" {
+		device = deviceSlot.Value
+		deviceGiven = true
 	}
 
 	switch {
-	case buildTypeGiven && sourceTypeGiven:
+	case actionGiven && deviceGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("'%s' is build for '%s'", sourceType, buildType),
+			Text: fmt.Sprintf("I did %s the %s for you.", action, device),
 		}
 		isComplete = true
-	case !buildTypeGiven && sourceTypeGiven:
+	case !actionGiven && deviceGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build type for build source '%s'", sourceType),
+			Text: fmt.Sprintf("Please specify the action on the device %s", device),
 		}
-	case buildTypeGiven && !sourceTypeGiven:
+	case actionGiven && !deviceGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please tell the build source type for the build type '%s'", buildType),
+			Text: fmt.Sprintf("Please specify which device to perform action %s on", action),
 		}
-	case !buildTypeGiven && !sourceTypeGiven:
+	case !actionGiven && !deviceGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "Please tell the build source type and build type",
+			Text: "I could be helpful if I know what to do. Please specify action or device.",
 		}
 	default:
 		outSpeech = &alexa.OutputSpeech{

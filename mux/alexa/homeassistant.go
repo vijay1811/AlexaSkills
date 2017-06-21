@@ -11,10 +11,10 @@ import (
 )
 
 func init() {
-	mux["/alexa/buildhelper"] = alexaBuildHelper
+	mux["/alexa/homeassistant"] = alexaHomeAssistant
 }
 
-func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHandler) {
+func alexaHomeAssistant(w http.ResponseWriter, r *http.Request, rh alexa.RequestHandler) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -33,7 +33,6 @@ func alexaBuildHelper(w http.ResponseWriter, r *http.Request, rh alexa.RequestHa
 	}
 
 	log.Printf("ALEXA REQUEST RECEIVED: %+v", alexaReq)
-	log.Printf("ALEXA REQUEST SESSION OBJECT RECEIVED: %+v", alexaReq.Session)
 	log.Printf("ALEXA REQUEST SESSION ATTRIBUTES RECEIVED: %+v", alexaReq.Session.Attributes)
 
 	alexaResp, err := rh.HandleRequest(alexaReq)

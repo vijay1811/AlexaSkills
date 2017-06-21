@@ -11,7 +11,7 @@ func (handlerLaunchRequest) handleRequest(r *alexa.AlexaRequest) (*alexa.AlexaRe
 		Response: &alexa.Response{
 			OutputSpeech: &alexa.OutputSpeech{
 				Type: "PlainText",
-				Text: "Hi I am build helper I will help you to build",
+				Text: "Hi, I am your Home Assistant. How can I help you?",
 			},
 		},
 	}, nil
