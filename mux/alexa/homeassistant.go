@@ -32,7 +32,7 @@ func alexaHomeAssistant(w http.ResponseWriter, r *http.Request, rh alexa.Request
 		return
 	}
 
-	log.Printf("Access Token Received: %+v", alexaReq.Session.User.AccessToken)
+	log.Printf("ACCESS TOKEN RECEIVED: %+v", alexaReq.Session.User.AccessToken)
 
 	log.Printf("ALEXA REQUEST RECEIVED: %+v", alexaReq)
 	log.Printf("ALEXA REQUEST SESSION ATTRIBUTES RECEIVED: %+v", alexaReq.Session.Attributes)
