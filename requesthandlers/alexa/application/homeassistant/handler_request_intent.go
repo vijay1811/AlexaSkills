@@ -94,6 +94,7 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 			Type: "PlainText",
 			Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
 		}
+		isComplete = true
 	case actionGiven && deviceGiven && !locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
