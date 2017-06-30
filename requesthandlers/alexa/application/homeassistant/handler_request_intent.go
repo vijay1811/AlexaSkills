@@ -68,9 +68,10 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 
 	actionSlot := slots["actionSlot"]
 	deviceSlot := slots["deviceSlot"]
+	locationSlot := slots["locationSlot"]
 
-	var action, device string
-	var actionGiven, deviceGiven bool
+	var action, device, location string
+	var actionGiven, deviceGiven, locationGiven bool
 
 	if actionSlot.Value != "" {
 		action = actionSlot.Value
@@ -82,27 +83,51 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 		deviceGiven = true
 	}
 
+	if locationSlot.Value != "" {
+		location = locationSlot.Value
+		locationGiven = true
+	}
+
 	switch {
-	case actionGiven && deviceGiven:
+	case actionGiven && deviceGiven && locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("I did %s the %s for you.", action, device),
+			Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
 		}
-		isComplete = true
-	case !actionGiven && deviceGiven:
+	case actionGiven && deviceGiven && !locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please specify the action on the device %s", device),
+			Text: fmt.Sprintf("Please specify the location of your installed %s.", device),
 		}
-	case actionGiven && !deviceGiven:
+	case actionGiven && !deviceGiven && locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("Please specify which device to perform action %s on", action),
+			Text: fmt.Sprintf("Ok! I am in %s. Please specify the device to %s", location, action),
 		}
-	case !actionGiven && !deviceGiven:
+	case actionGiven && !deviceGiven && !locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: "I could be helpful if I know what to do. Please specify action or device.",
+			Text: fmt.Sprintf("Please specify the location and the device to %s", action),
+		}
+	case !actionGiven && deviceGiven && locationGiven:
+		outSpeech = &alexa.OutputSpeech{
+			Type: "PlainText",
+			Text: fmt.Sprintf("What would you want me to do with %s's %s", location, device),
+		}
+	case !actionGiven && deviceGiven && !locationGiven:
+		outSpeech = &alexa.OutputSpeech{
+			Type: "PlainText",
+			Text: fmt.Sprintf("Please specify the location of your installed %s", device),
+		}
+	case !actionGiven && !deviceGiven && locationGiven:
+		outSpeech = &alexa.OutputSpeech{
+			Type: "PlainText",
+			Text: fmt.Sprintf("Ok! I am in %s. Please specify the device", location),
+		}
+	case !actionGiven && !deviceGiven && !locationGiven:
+		outSpeech = &alexa.OutputSpeech{
+			Type: "PlainText",
+			Text: fmt.Sprintf("I could be helpful if I know what to do. Let's begin with device or location"),
 		}
 	default:
 		outSpeech = &alexa.OutputSpeech{
@@ -110,6 +135,35 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 			Text: "This is not possible",
 		}
 	}
+
+	// switch {
+	// case actionGiven && deviceGiven:
+	// 	outSpeech = &alexa.OutputSpeech{
+	// 		Type: "PlainText",
+	// 		Text: fmt.Sprintf("I did %s the %s for you.", action, device),
+	// 	}
+	// 	isComplete = true
+	// case !actionGiven && deviceGiven:
+	// 	outSpeech = &alexa.OutputSpeech{
+	// 		Type: "PlainText",
+	// 		Text: fmt.Sprintf("Please specify the action on the device %s", device),
+	// 	}
+	// case actionGiven && !deviceGiven:
+	// 	outSpeech = &alexa.OutputSpeech{
+	// 		Type: "PlainText",
+	// 		Text: fmt.Sprintf("Please specify which device to perform action %s on", action),
+	// 	}
+	// case !actionGiven && !deviceGiven:
+	// 	outSpeech = &alexa.OutputSpeech{
+	// 		Type: "PlainText",
+	// 		Text: "I could be helpful if I know what to do. Please specify action or device.",
+	// 	}
+	// default:
+	// 	outSpeech = &alexa.OutputSpeech{
+	// 		Type: "PlainText",
+	// 		Text: "This is not possible",
+	// 	}
+	// }
 
 	return outSpeech, slots, isComplete
 }
