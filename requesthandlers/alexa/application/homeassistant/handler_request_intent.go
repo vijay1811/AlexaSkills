@@ -89,12 +89,19 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot) (*
 	}
 
 	switch {
+	case action == "Thanks" || action == "Thank You" || action == "Yes":
+		isComplete = true
 	case actionGiven && deviceGiven && locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
-			Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
+			Text: fmt.Sprintf("I did %s the %s's %s for you. Will that be all?", action, location, device),
 		}
-		isComplete = true
+
+		// Clear the existing filled slots to talk again.
+		delete(slots, "actionSlot")
+		delete(slots, "deviceSlot")
+		delete(slots, "locationSlot")
+		// isComplete = true
 	case actionGiven && deviceGiven && !locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
