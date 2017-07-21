@@ -99,19 +99,28 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot, cl
 		device = strings.Title(strings.ToLower(device))
 		location = strings.Title(strings.ToLower(location))
 
-		if err := publishToMQTT(cl, action, location, device); err != nil {
-			outSpeech = &alexa.OutputSpeech{
-				Type: "PlainText",
-				Text: "There seems to be some problem communicating over MQTT",
-			}
-		} else {
-			outSpeech = &alexa.OutputSpeech{
-				Type: "PlainText",
-				// Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
-				Text: "In Progress",
-			}
-			isComplete = true
+		go publishToMQTT(cl, action, location, device)
+
+		outSpeech = &alexa.OutputSpeech{
+			Type: "PlainText",
+			// Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
+			Text: "In Progress",
 		}
+		isComplete = true
+
+		// if err := publishToMQTT(cl, action, location, device); err != nil {
+		// 	outSpeech = &alexa.OutputSpeech{
+		// 		Type: "PlainText",
+		// 		Text: "There seems to be some problem communicating over MQTT",
+		// 	}
+		// } else {
+		// 	outSpeech = &alexa.OutputSpeech{
+		// 		Type: "PlainText",
+		// 		// Text: fmt.Sprintf("I did %s the %s's %s for you.", action, location, device),
+		// 		Text: "In Progress",
+		// 	}
+		// 	isComplete = true
+		// }
 	case actionGiven && deviceGiven && !locationGiven:
 		outSpeech = &alexa.OutputSpeech{
 			Type: "PlainText",
@@ -157,10 +166,12 @@ func getOutputSpeech(intent *alexa.Intent, attributes map[string]*alexa.Slot, cl
 	return outSpeech, slots, isComplete
 }
 
-func publishToMQTT(mqttCl mqtt.Client, action, location, device string) error {
+func publishToMQTT(mqttCl mqtt.Client, action, location, device string) {
 	fmt.Printf("Connecting the 'Client_Alexa' to publish\n")
 	if token := mqttCl.Connect(); token.Wait() && token.Error() != nil {
-		return token.Error()
+		err := token.Error()
+		fmt.Printf("Error Connecting MQTT Client: %v\n", err.Error())
+		return
 	}
 
 	if strings.Contains(strings.ToLower(action), "on") || strings.ToLower(action) == "start" {
@@ -177,7 +188,8 @@ func publishToMQTT(mqttCl mqtt.Client, action, location, device string) error {
 
 	payload, err := json.Marshal(skillMap)
 	if err != nil {
-		return err
+		fmt.Printf("Error Marshalling the skillMap: %v", err.Error())
+		return
 	}
 
 	// Publishing New Information
@@ -188,5 +200,5 @@ func publishToMQTT(mqttCl mqtt.Client, action, location, device string) error {
 	fmt.Printf("Disconnecting 'Client_Alexa'\n")
 	mqttCl.Disconnect(250)
 
-	return nil
+	return
 }
