@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+
 	alexaProtocol "AlexaSkills/protocol/alexa"
 	"AlexaSkills/requesthandlers/alexa"
 )
@@ -14,7 +16,7 @@ func init() {
 	mux["/alexa/homeassistant"] = alexaHomeAssistant
 }
 
-func alexaHomeAssistant(w http.ResponseWriter, r *http.Request, rh alexa.RequestHandler) {
+func alexaHomeAssistant(w http.ResponseWriter, r *http.Request, rh alexa.RequestHandler, cl mqtt.Client) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -32,17 +34,17 @@ func alexaHomeAssistant(w http.ResponseWriter, r *http.Request, rh alexa.Request
 		return
 	}
 
-	log.Printf("ALEXA REQUEST RECEIVED: %+v", alexaReq)
-	log.Printf("ALEXA REQUEST SESSION ATTRIBUTES RECEIVED: %+v", alexaReq.Session.Attributes)
+	// log.Printf("ALEXA REQUEST RECEIVED: %+v", alexaReq)
+	// log.Printf("ALEXA REQUEST SESSION ATTRIBUTES RECEIVED: %+v", alexaReq.Session.Attributes)
 
-	alexaResp, err := rh.HandleRequest(alexaReq)
+	alexaResp, err := rh.HandleRequest(alexaReq, cl)
 	if err != nil {
 		// TODO handle errors gracefully here
 		log.Printf("ERROR: %v\n", err)
 		return
 	}
 
-	log.Printf("SENDING ALEXA RESPONSE: %+v", alexaResp)
+	// log.Printf("SENDING ALEXA RESPONSE: %+v", alexaResp)
 
 	resp, err := json.Marshal(alexaResp)
 	if err != nil {

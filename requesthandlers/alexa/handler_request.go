@@ -3,6 +3,8 @@ package alexa
 import (
 	"errors"
 
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+
 	"AlexaSkills/protocol/alexa"
 	assistant "AlexaSkills/requesthandlers/alexa/application/homeassistant"
 )
@@ -15,12 +17,12 @@ type Default struct {
 	aaps map[string]RequestHandler
 }
 
-func (d *Default) HandleRequest(r *alexa.AlexaRequest) (*alexa.AlexaResponse, error) {
+func (d *Default) HandleRequest(r *alexa.AlexaRequest, cl mqtt.Client) (*alexa.AlexaResponse, error) {
 	h, ok := d.aaps[r.Session.Application.ApplicationID]
 	if !ok {
 		return nil, errors.New("Application is not supported")
 	}
-	return h.HandleRequest(r)
+	return h.HandleRequest(r, cl)
 }
 
 func NewAlexaRequestHandler() RequestHandler {

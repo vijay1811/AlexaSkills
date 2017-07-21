@@ -4,6 +4,8 @@ import (
 	"errors"
 	"log"
 
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+
 	"AlexaSkills/protocol/alexa"
 )
 
@@ -21,11 +23,11 @@ func NewRequestHandler() *Default {
 	}
 }
 
-func (d *Default) HandleRequest(r *alexa.AlexaRequest) (*alexa.AlexaResponse, error) {
+func (d *Default) HandleRequest(r *alexa.AlexaRequest, cl mqtt.Client) (*alexa.AlexaResponse, error) {
 	h, ok := d.handlers[r.Request.Type]
 	if !ok {
 		log.Printf("request Type : %v , type: %T", r.Request.Type, r.Request.Type)
 		return nil, errors.New("request not supported")
 	}
-	return h.handleRequest(r)
+	return h.handleRequest(r, cl)
 }
