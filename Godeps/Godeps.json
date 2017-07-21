@@ -1,6 +1,25 @@
 {
 	"ImportPath": "AlexaSkills",
-	"GoVersion": "go1.6",
+	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
-	"Deps": []
+	"Deps": [
+		{
+			"ImportPath": "github.com/eclipse/paho.mqtt.golang",
+			"Comment": "v1.0.0-44-ge9f694b",
+			"Rev": "e9f694b2eba2cc7e1eeec8e488415d00587f508a"
+		},
+		{
+			"ImportPath": "github.com/eclipse/paho.mqtt.golang/packets",
+			"Comment": "v1.0.0-44-ge9f694b",
+			"Rev": "e9f694b2eba2cc7e1eeec8e488415d00587f508a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/proxy",
+			"Rev": "5f8847ae0d0e90b6a9dc8148e7ad616874625171"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "5f8847ae0d0e90b6a9dc8148e7ad616874625171"
+		}
+	]
 }
